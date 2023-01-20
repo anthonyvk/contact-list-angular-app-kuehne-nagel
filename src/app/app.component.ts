@@ -52,26 +52,44 @@ export class AppComponent implements OnInit {
     if (pageSize) {
       params[`size`] = pageSize;
     }
-    if(nameSearchValue) {
+
+    console.log("params[`searchValue`] = " + params[`searchValue`])
+    if(nameSearchValue != null && nameSearchValue != '') {
       params[`searchValue`] = nameSearchValue;
     }
     return params;
   }
 
   retrieveContacts(): void {
-    const params = this.getRequestParams(this.title, this.page, this.pageSize, this.nameSearchValue);
+    let name = this.nameSearchValue;
+    console.log(" name = " + name);
+    const params = this.getRequestParams(this.title, this.page, this.pageSize, name);
 
-    this.getAll(params)
-      .subscribe(
-        response => {
-          const {contactList, totalContacts} = response;
-          console.log("contacts = " + contactList)
-          this.contacts = contactList;
-          this.count = totalContacts;
-        },
-        error => {
-          console.log(error);
-        });
+    if(name) {
+      this.getAllByName(params)
+        .subscribe(
+          response => {
+            const {contactList, totalContacts} = response;
+            console.log("contacts = " + contactList)
+            this.contacts = contactList;
+            this.count = totalContacts;
+          },
+          error => {
+            console.log(error);
+          });
+    } else {
+      this.getAll(params)
+        .subscribe(
+          response => {
+            const {contactList, totalContacts} = response;
+            console.log("contacts = " + contactList)
+            this.contacts = contactList;
+            this.count = totalContacts;
+          },
+          error => {
+            console.log(error);
+          });
+    }
   }
 
   searchContactsByName(): void {
