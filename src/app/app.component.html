@@ -1,22 +1,39 @@
-<div class="container">
+<div class="container" xmlns="http://www.w3.org/1999/html">
   <h3 class="text-center mt-5 mb-5">Contact Management System</h3>
   <hr/>
-<!--  <center>-->
-    Search Name : <input type="text" class="form-control" placeholder="Search by Name" [(ngModel)]="nameSearchValue"/>
-    <div class="input-group-append">
+    <div style="text-align: center">
+      Search by Name : <input type="text" placeholder="Search by Name" [(ngModel)]="nameSearchValue"/>&nbsp;&nbsp;
       <button
         class="btn btn-outline-secondary"
         type="button"
         (click)="retrieveContacts()">
         Search
       </button>
-<!--  </center>-->
+
+      <button
+        class="btn btn-outline-secondary"
+        type="button"
+        (click)="clearSearchFilterAndLoadAll()">
+        Clear search filter
+      </button>
+
+      <br/>
+      <br/>
+      Total entries per page : <select (change)="retrieveContacts()" [(ngModel)]="pageSize">
+        <option [ngValue]="10">10</option>
+        <option [ngValue]="20">20</option>
+        <option [ngValue]="30">30</option>
+        <option [ngValue]="50">50</option>
+        <option [ngValue]="100">100</option>
+      </select>
+    </div>
   <hr/>
-  <table class="table">
+  <table class="table" style="text-align: center">
     <thead>
     <tr>
       <th>ID</th>
-      <th>Title</th>
+      <th>Name</th>
+      <th>Profile picture</th>
     </tr>
     </thead>
     <tbody>

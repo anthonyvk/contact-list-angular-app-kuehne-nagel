@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {Observable} from "rxjs";
 import {HttpClient} from "@angular/common/http";
 import {DomSanitizer} from "@angular/platform-browser";
+import {FormBuilder, FormGroup} from "@angular/forms";
 // import console from "console";
 
 const BASEURL = 'http://localhost:8080/api';
@@ -22,10 +23,12 @@ export class AppComponent implements OnInit {
   pageSizes = [3, 6, 9];
 
   nameSearchValue = '';
+  ps = 10;
 
   constructor(
     private httpClient: HttpClient,
-    private sanitizer:DomSanitizer)
+    private sanitizer:DomSanitizer,
+    private formBuilder: FormBuilder)
   {}
 
   ngOnInit(): void {
@@ -60,12 +63,18 @@ export class AppComponent implements OnInit {
     return params;
   }
 
-  retrieveContacts(): void {
-    let name = this.nameSearchValue;
-    console.log(" name = " + name);
-    const params = this.getRequestParams(this.title, this.page, this.pageSize, name);
+  clearSearchFilterAndLoadAll(): void {
+    this.page = 1;
+    this.pageSize = 10;
+    this.nameSearchValue = '';
+    this.retrieveContacts();
+  }
 
-    if(name) {
+  retrieveContacts(): void {
+    const params = this.getRequestParams(this.title, this.page, this.pageSize, this.nameSearchValue);
+
+    if(this.nameSearchValue) {
+      this.page = 1;
       this.getAllByName(params)
         .subscribe(
           response => {
