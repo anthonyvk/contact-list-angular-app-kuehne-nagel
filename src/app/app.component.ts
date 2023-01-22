@@ -20,15 +20,11 @@ export class AppComponent implements OnInit {
   page = 1;
   count = 0;
   pageSize = 10;
-  pageSizes = [3, 6, 9];
-
   nameSearchValue = '';
-  ps = 10;
 
   constructor(
     private httpClient: HttpClient,
-    private sanitizer:DomSanitizer,
-    private formBuilder: FormBuilder)
+    private sanitizer:DomSanitizer)
   {}
 
   ngOnInit(): void {
@@ -102,30 +98,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  searchContactsByName(): void {
-    const params = this.getRequestParams(this.title, this.page, this.pageSize, this.nameSearchValue);
-
-    this.getAllByName(params)
-      .subscribe(
-        response => {
-          const {contactList, totalContacts} = response;
-          console.log("contacts = " + contactList)
-          this.contacts = contactList;
-          this.count = totalContacts;
-        },
-        error => {
-          console.log(error);
-        });
-  }
-
   handlePageChange(event: number): void {
     this.page = event;
-    this.retrieveContacts();
-  }
-
-  handlePageSizeChange(event: any): void {
-    this.pageSize = event.target.value;
-    this.page = 1;
     this.retrieveContacts();
   }
 
